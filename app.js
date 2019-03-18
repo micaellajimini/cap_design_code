@@ -32,13 +32,13 @@ app.get('/dump', function(req,res){
 	fs.readFile('log.txt','utf-8', function(err,data){
 		if(err) throw err;
 		var array = data.toString().split('\n');
-		if(count > array.length-1){
+		var arrsize = array.length;
+		if(count > arrsize-1){
 			result["error"]="there are less data than count\n";
-			cnt = array.length-1;
-			console.log(cnt);
+			cnt = arrsize-1;
 		}
 		for(var i=0;i<cnt;i++){
-			dataa.push(array[i]);
+			dataa.push(array[arrsize-2-i]);
 		}
 		result["data"] = dataa;
 		res.send(result);
