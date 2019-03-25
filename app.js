@@ -4,6 +4,11 @@ var date = require('date-and-time');
 
 var app = express();
 
+app.set('views','./views');
+app.set('view engine','pug');
+
+app.use(express.static('public'));
+
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
@@ -41,7 +46,8 @@ app.get('/dump', function(req,res){
 			dataa.push(array[arrsize-2-i]);
 		}
 		result["data"] = dataa;
-		res.send(result);
+		res.render('graph');
+		//res.send(result);
 	});
 })
 
