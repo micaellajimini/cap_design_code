@@ -5,7 +5,8 @@ var date = require('date-and-time');
 var app = express();
 
 app.set('views','./views');
-app.set('view engine','pug');
+app.set('view engine','ejs');
+app.engine('html',require('ejs').renderFile);
 
 app.use(express.static('public'));
 
@@ -17,10 +18,11 @@ app.get('/log', function(req,res){
 	console.log(req.query);
 	var now = new Date();
 	now = date.addHours(now,9);
-	console.log(date.format(now,"YYYY/MM/DD HH:mm:ss"));
+	console.log(date.format(now,"YYYY/MM/DD/HH/mm/ss"));
+	
 	fs.open('log.txt', 'a', (err, fd) => {
   		if (err) throw err;
-  		fs.appendFile(fd, date.format(now,"YYYY/MM/DD HH:mm:ss") +' '+ req.query.temp+'\n', 'utf8', (err) => {
+  		fs.appendFile('log.txt', date.format(now,"YYYY/MM/DD/HH/mm/ss")+' '+ req.query.temp+'\n', 'utf8', (err) => {
     			fs.close(fd, (err) => {
       				if (err) throw err;
     			});
@@ -31,6 +33,7 @@ app.get('/log', function(req,res){
 
 app.get('/dump', function(req,res){
 	var count = req.query.count;
+	if(!count) res.send({'Error':'No count'});
 	var cnt = count;
 	var dataa = [];
 	var result = {};
@@ -43,10 +46,10 @@ app.get('/dump', function(req,res){
 			cnt = arrsize-1;
 		}
 		for(var i=0;i<cnt;i++){
-			dataa.push(array[arrsize-2-i]);
+			dataa.push(array[arrsize-2-i].split(' '));
 		}
 		result["data"] = dataa;
-		res.render('graph');
+		res.render('index.html',{'data' : dataa});
 		//res.send(result);
 	});
 })

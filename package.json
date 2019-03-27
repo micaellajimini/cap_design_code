@@ -1,0 +1,23 @@
+{
+  "name": "capstone_design",
+  "version": "1.0.0",
+  "description": "for capstone",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/micaellajimini/cap_design_code.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/micaellajimini/cap_design_code/issues"
+  },
+  "homepage": "https://github.com/micaellajimini/cap_design_code#readme"
+}
