@@ -47,11 +47,13 @@
   <!-- Masthead -->
   <header class="masthead">
     <div class="container h-100">
-      <div class="mt-5 row h-100 align-items-center justify-content-center text-center">
-        <div class="col-8">
+      <div class="row h-100 align-items-center justify-content-center text-center">
+        <div >
           <div class="card">
-            <div class="card-body">
-              <div class="my-4" id="chart_div"></div>
+            <div class="card-header">
+		<span id="date_range"></span>
+	    <div class="card-body">
+              <div class="" id="chart_div"></div>
             </div>
           </div>
         </div>
@@ -81,37 +83,44 @@
   <script src="js/creative.min.js"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
+    var tempData = '<%= dataa %>';
+    var max = '<%= max %>';
+    var min = '<%= min %>';
+    var temp = tempData.split(',');
+    var dataa = [];
+
+    max = max.split(',')[0].split('/');
+    min = min.split(',')[0].split('/');
+    document.getElementById('date_range').innerHTML = new Date(min[0],parseInt(min[1])-1,min[2],min[3],min[4])+' ~ '+new Date(max[0],parseInt(max[1])-1,max[2],max[3],max[4]);
+    for(var i=0;i<temp.length-1;i=i+2){
+    	var resulttmp = [];
+	var tmp = temp[i].split('/');
+	resulttmp.push(new Date(tmp[0],parseInt(tmp[1])-1,tmp[2],tmp[3],tmp[4]));
+	resulttmp.push(parseFloat(temp[i+1]));
+	dataa.push(resulttmp);
+    }
+    console.log(dataa);
     google.charts.load('current', {packages: ['corechart', 'line']});
     google.charts.setOnLoadCallback(drawBasic);
     
     function drawBasic() {
 
       var data = new google.visualization.DataTable();
-      data.addColumn('number', 'X');
-      data.addColumn('number', 'Dogs');
+      data.addColumn('datetime', 'X');
+      data.addColumn('number', 'Temperature');
 
-      data.addRows([
-        [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
-        [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
-        [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-        [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-        [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
-        [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
-        [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
-        [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
-        [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
-        [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
-        [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
-        [66, 70], [67, 72], [68, 75], [69, 80]
-      ]);
+      data.addRows(dataa);
 
       var options = {
         hAxis: {
           title: 'Time'
         },
         vAxis: {
-          title: 'Popularity'
-        }
+          title: 'Temperature'
+        },
+	width : 900,
+	height : 450,
+	pointShape : 'diamond'
       };
 
       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

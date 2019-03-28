@@ -37,6 +37,7 @@ app.get('/dump', function(req,res){
 	var cnt = count;
 	var dataa = [];
 	var result = {};
+	var max,min;
 	fs.readFile('log.txt','utf-8', function(err,data){
 		if(err) throw err;
 		var array = data.toString().split('\n');
@@ -46,10 +47,12 @@ app.get('/dump', function(req,res){
 			cnt = arrsize-1;
 		}
 		for(var i=0;i<cnt;i++){
+			if(i==0) max = array[arrsize-2-i].split(' ');
+			if(i==cnt-1) min = array[arrsize-2-i].split(' ');
 			dataa.push(array[arrsize-2-i].split(' '));
 		}
 		result["data"] = dataa;
-		res.render('index.html',{'data' : dataa});
+		res.render('index.html',{'dataa' : dataa, 'max': max, 'min': min});
 		//res.send(result);
 	});
 })
