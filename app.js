@@ -3,12 +3,14 @@ var fs = require('fs');
 var date = require('date-and-time');
 var mysql = require('mysql');
 var Promise = require('bluebird');
+var security = require('./config_jimin');
+
 var app = express();
 var connection = mysql.createConnection({
-	host : 'localhost',
-	user : 'root',
-	password : 'wlalsdl3417',
-	database : 'mydb'
+	host : security.host,
+	user : security.user,
+	password : security.passwd,
+	database : security.db
 })
 connection.connect();
 
@@ -31,7 +33,7 @@ app.get('/log', function(req,res){
 	var querydata = {};
 	querydata.time = now;
 	querydata.value = req.query.temp;
-	querydata.ip = '172.31.30.254';
+	querydata.ip = security.dataip;
 
 	sql = "insert into sensors set ?";
 
