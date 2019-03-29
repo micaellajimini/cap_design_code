@@ -1,8 +1,17 @@
 var express = require('express');
 var fs = require('fs');
 var date = require('date-and-time');
-
+var mysql = require('mysql');
+var Promise = require('bluebird');
 var app = express();
+var connection = mysql.createConnection({
+	host : 'localhost',
+	user : 'root',
+	password : 'wlalsdl3417',
+	database : 'mydb'
+})
+connection.connect();
+
 
 app.set('views','./views');
 app.set('view engine','ejs');
@@ -19,42 +28,37 @@ app.get('/log', function(req,res){
 	var now = new Date();
 	now = date.addHours(now,9);
 	console.log(date.format(now,"YYYY/MM/DD/HH/mm/ss"));
-	
-	fs.open('log.txt', 'a', (err, fd) => {
-  		if (err) throw err;
-  		fs.appendFile('log.txt', date.format(now,"YYYY/MM/DD/HH/mm/ss")+' '+ req.query.temp+'\n', 'utf8', (err) => {
-    			fs.close(fd, (err) => {
-      				if (err) throw err;
-    			});
-    			if (err) throw err;
-  		});
-	});	
+	var querydata = {};
+	querydata.time = now;
+	querydata.value = req.query.temp;
+	querydata.ip = '172.31.30.254';
+
+	sql = "insert into sensors set ?";
+
+	connection.query(sql,querydata, (err, rows, fields) => {
+		if(err){
+			throw err;
+                }
+        })
 });
 
-app.get('/dump', function(req,res){
-	var count = req.query.count;
-	if(!count) res.send({'Error':'No count'});
-	var cnt = count;
-	var dataa = [];
-	var result = {};
+app.get('/showgraph', function(req,res){
 	var max,min;
-	fs.readFile('log.txt','utf-8', function(err,data){
-		if(err) throw err;
-		var array = data.toString().split('\n');
-		var arrsize = array.length;
-		if(count > arrsize-1){
-			result["error"]="there are less data than count\n";
-			cnt = arrsize-1;
+	//change to mysql db
+	var sql = "select value, time from sensors order by time DESC limit 120;"
+	connection.query(sql, (err, rows, fields) => {
+		if(err){
+			throw err;
+                }
+		var arrsize = rows.length;
+		for(var i=0;i<arrsize;i++){
+			if(i==arrsize-1) max = rows[i].time;
+			if(i==0) min = rows[i].time;
 		}
-		for(var i=0;i<cnt;i++){
-			if(i==0) max = array[arrsize-2-i].split(' ');
-			if(i==cnt-1) min = array[arrsize-2-i].split(' ');
-			dataa.push(array[arrsize-2-i].split(' '));
-		}
-		result["data"] = dataa;
-		res.render('index.html',{'dataa' : dataa, 'max': max, 'min': min});
-		//res.send(result);
-	});
+		res.render('index.html',{'dataa' : rows, 'min' : min, 'max' : max})
+		//console.log(min,max);
+	})
+
 })
 
 app.listen(8000, function () {
