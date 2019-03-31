@@ -6,3 +6,8 @@ another code in need
 ```
 already changed the information.
 ```
+## 03.31
+```
+데이터가 이상하다 -> 확인 후 다시 코드 백그라운드 실행
+8:20 부근 잠깐 끊김 있음
+```
