@@ -14,5 +14,5 @@ already changed the information.
 ```
 ```
 thingspeak.com 과 살짝 다를 수 있음
-내 아두이노 코드는 서버로 보낼 때, thingspeak로 보낼 때 각각 한번씩 
+내 아두이노 코드는 서버로 보낼 때, thingspeak로 보낼 때 각각 한번씩 측정
 ```
