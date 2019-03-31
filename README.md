@@ -3,6 +3,7 @@ another code in need
 
 기기 사이즈에 맞췄음!(반응형)
 그래프는 새로고침해야 맞춰짐(아쉽)
+데이터 120개 보여줌(1분에 한 개 = 2시간동안의 데이터)
 ```
 already changed the information.
 ```
