@@ -17,3 +17,9 @@ thingspeak.com 과 살짝 다를 수 있음
 내 아두이노 코드는 서버로 보낼 때, thingspeak로 보낼 때 각각 한번씩 측정
 ```
 [아두이노 코드](https://github.com/micaellajimini/Capstone_design)
+
+```
+app.js 있는 곳에 config_jimin.js 필요
+db user, password
+table name
+```
